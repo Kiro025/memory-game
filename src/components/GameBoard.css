@@ -1,0 +1,44 @@
+/* GameBoard.css */
+
+.gameboard {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .back-button {
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .back-button:hover {
+    background-color: #5a4ed0;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1rem;
+    margin: 0 auto;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  
+  .victory {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    color: #00b894;
+    font-weight: 600;
+  }
+  

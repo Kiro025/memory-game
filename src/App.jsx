@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import GameBoard from './components/GameBoard';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [level, setLevel] = useState('easy');
+  const [theme, setTheme] = useState('animals');
+  const [startGame, setStartGame] = useState(false);
+  const [gameId, setGameId] = useState(0); // 🔑 Add a session ID
+
+  const handleStart = () => {
+    setGameId((prev) => prev + 1); // 🔁 New game = new ID
+    setStartGame(true);
+  };
+
+  const handleReset = () => {
+    setStartGame(false);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <div className="container">
+        <h1>Memory Flip Game</h1>
+
+        {!startGame && (
+          <div className="config-panel">
+            <div>
+              <label>Choose Level: </label>
+              <select onChange={(e) => setLevel(e.target.value)} value={level}>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+            <div>
+              <label>Choose Theme: </label>
+              <select onChange={(e) => setTheme(e.target.value)} value={theme}>
+                <option value="animals">Animals</option>
+                <option value="nature">Nature</option>
+                <option value="emojis">Emojis</option>
+              </select>
+            </div>
+            <button onClick={handleStart}>Start Game</button>
+          </div>
+        )}
+
+        {startGame && (
+          <GameBoard
+            key={gameId} 
+            level={level}
+            theme={theme}
+            onReset={handleReset}
+          />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

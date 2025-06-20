@@ -53,3 +53,25 @@
     color: #2d3436;
   }
   
+  .victory-screen {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .play-again {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #00b894;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .play-again:hover {
+    background-color: #00a07a;
+  }
+  

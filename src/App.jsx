@@ -4,13 +4,19 @@ import './App.css';
 
 function App() {
   const [level, setLevel] = useState('easy');
-  const [theme, setTheme] = useState('animals');
+  const [theme, setTheme] = useState('emojis');
   const [startGame, setStartGame] = useState(false);
-  const [gameId, setGameId] = useState(0); 
+  const [gameId, setGameId] = useState(0);
+
+  // Debug log to verify theme is updating
+  console.log("Current theme in App:", theme);
 
   const handleStart = () => {
-    setGameId((prev) => prev + 1); //new game new id
-    setStartGame(true);
+    // Small delay to let setTheme/setLevel finish updating
+    setTimeout(() => {
+      setGameId((prev) => prev + 1);
+      setStartGame(true);
+    }, 0);
   };
 
   const handleReset = () => {
@@ -35,9 +41,8 @@ function App() {
             <div>
               <label>Choose Theme: </label>
               <select onChange={(e) => setTheme(e.target.value)} value={theme}>
-                <option value="animals">Animals</option>
-                <option value="nature">Nature</option>
                 <option value="emojis">Emojis</option>
+                <option value="numbers">Numbers</option>
               </select>
             </div>
             <button onClick={handleStart}>Start Game</button>
@@ -46,7 +51,7 @@ function App() {
 
         {startGame && (
           <GameBoard
-            key={gameId} 
+            key={gameId}
             level={level}
             theme={theme}
             onReset={handleReset}

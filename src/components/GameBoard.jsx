@@ -8,6 +8,10 @@ function GameBoard({ level, theme, onReset }) {
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
   const [disabled, setDisabled] = useState(false); // lock flips during comparison
+  const [moves, setMoves] = useState(0);
+  const [time, setTime] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
+
 
   // Number of pairs per level
   const getNumPairs = () => {
@@ -36,7 +40,49 @@ function GameBoard({ level, theme, onReset }) {
     setFlipped([]);
     setMatched([]);
     setDisabled(false);
+    setMoves(0);
+    setTime(0);
+    setTimerActive(true);    
   }, [level, theme]);
+
+  useEffect(() => {
+    let interval;
+    if (timerActive) {
+      interval = setInterval(() => {
+        setTime((prev) => prev + 1);
+      }, 1000);
+    }
+  
+    return () => clearInterval(interval);
+  }, [timerActive]);
+
+
+  useEffect(() => {
+    if (matched.length === getNumPairs()) {
+      setTimerActive(false);
+    }
+  }, [matched]);
+
+
+  useEffect(() => {
+    if (flipped.length === 2) {
+      setDisabled(true);
+      setMoves((prev) => prev + 1); //counts the move
+  
+      const [i, j] = flipped;
+      if (cards[i].img === cards[j].img) {
+        setMatched((prev) => [...prev, cards[i].img]);
+      }
+  
+      setTimeout(() => {
+        setFlipped([]);
+        setDisabled(false);
+      }, 800);
+    }
+  }, [flipped, cards]);
+  
+  
+  
 
   // Handle flip
   const handleFlip = (index) => {
@@ -68,6 +114,11 @@ function GameBoard({ level, theme, onReset }) {
   return (
     <div className="gameboard">
       <button className="back-button" onClick={onReset}>← Back to Menu</button>
+
+      <div className="stats">
+        <p><strong>Time:</strong> {time}s</p>
+        <p><strong>Moves:</strong> {moves}</p>
+      </div>
 
       <div
         className="grid"

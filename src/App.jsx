@@ -6,10 +6,10 @@ function App() {
   const [level, setLevel] = useState('easy');
   const [theme, setTheme] = useState('animals');
   const [startGame, setStartGame] = useState(false);
-  const [gameId, setGameId] = useState(0); // 🔑 Add a session ID
+  const [gameId, setGameId] = useState(0); 
 
   const handleStart = () => {
-    setGameId((prev) => prev + 1); // 🔁 New game = new ID
+    setGameId((prev) => prev + 1); //new game new id
     setStartGame(true);
   };
 

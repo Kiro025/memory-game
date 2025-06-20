@@ -7,29 +7,26 @@ function GameBoard({ level, theme, onReset }) {
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
-  const [disabled, setDisabled] = useState(false); // lock flips during comparison
+  const [disabled, setDisabled] = useState(false);
   const [moves, setMoves] = useState(0);
   const [time, setTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Number of pairs per level
   const getNumPairs = () => {
-    if (level === 'easy') return 4;      // 8 cards
-    if (level === 'medium') return 8;    // 16 cards
-    return 12;                           // 24 cards
+    if (level === 'easy') return 4;
+    if (level === 'medium') return 8;
+    return 12;
   };
 
-  // Dynamic grid layout per level
   const getGridTemplateColumns = () => {
-    if (level === 'easy') return 'repeat(4, 1fr)';    // 4x2
-    if (level === 'medium') return 'repeat(4, 1fr)';  // 4x4
-    return 'repeat(6, 1fr)';                          // 6x4
+    if (level === 'easy') return 'repeat(4, 1fr)';
+    if (level === 'medium') return 'repeat(4, 1fr)';
+    return 'repeat(6, 1fr)';
   };
 
-  // Initialize cards
-  useEffect(() => {
+  const initializeGame = () => {
     const numPairs = getNumPairs();
     const selected = getImages(theme).slice(0, numPairs);
     const duplicated = [...selected, ...selected];
@@ -45,9 +42,12 @@ function GameBoard({ level, theme, onReset }) {
     setTime(0);
     setTimerActive(true);
     setGameWon(false);
+  };
+
+  useEffect(() => {
+    initializeGame();
   }, [level, theme]);
 
-  // Timer logic
   useEffect(() => {
     let interval;
     if (timerActive) {
@@ -58,11 +58,10 @@ function GameBoard({ level, theme, onReset }) {
     return () => clearInterval(interval);
   }, [timerActive]);
 
-
   useEffect(() => {
     if (flipped.length === 2) {
       setDisabled(true);
-      setMoves((prev) => prev + 1); //counts the move
+      setMoves((prev) => prev + 1);
       const [i, j] = flipped;
       if (cards[i].img === cards[j].img) {
         setMatched((prev) => [...prev, cards[i].img]);
@@ -74,7 +73,6 @@ function GameBoard({ level, theme, onReset }) {
     }
   }, [flipped, cards]);
 
-  // Win logic (ONLY ONCE)
   useEffect(() => {
     if (
       matched.length === getNumPairs() &&
@@ -86,11 +84,14 @@ function GameBoard({ level, theme, onReset }) {
     }
   }, [matched, flipped, cards]);
 
-  // Handle flip
   const handleFlip = (index) => {
     if (disabled) return;
     if (flipped.length === 2 || flipped.includes(index)) return;
     setFlipped((prev) => [...prev, index]);
+  };
+
+  const handlePlayAgain = () => {
+    initializeGame(); // reset the board
   };
 
   return (
@@ -122,7 +123,10 @@ function GameBoard({ level, theme, onReset }) {
         </div>
       )}
       {gameWon && (
-        <p className="victory">🎉 You matched all pairs! Well done!</p>
+        <div className="victory-screen">
+          <p className="victory">🎉 You matched all pairs! Well done!</p>
+          <button className="play-again" onClick={handlePlayAgain}>Play Again</button>
+        </div>
       )}
     </div>
   );

@@ -12,6 +12,7 @@ function GameBoard({ level, theme, onReset }) {
   const [time, setTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
   const [gameWon, setGameWon] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // Number of pairs per level
   const getNumPairs = () => {
@@ -94,7 +95,7 @@ function GameBoard({ level, theme, onReset }) {
 
   return (
     <div className="gameboard">
-      <button className="back-button" onClick={onReset}>← Back to Menu</button>
+      <button className="back-button" onClick={() => setShowConfirm(true)}> ← Back to Menu</button>
       <div className="stats">
         <p><strong>Time:</strong> {time}s</p>
         <p><strong>Moves:</strong> {moves}</p>
@@ -109,6 +110,17 @@ function GameBoard({ level, theme, onReset }) {
           />
         ))}
       </div>
+      {showConfirm && (
+        <div className="confirm-modal">
+          <div className="confirm-box">
+            <p>Are you sure you want to leave the game?</p>
+            <div className='confirm-actions'>
+            <button onClick={() => { setShowConfirm(false); onReset(); }}>Yes</button>
+            <button onClick={() => setShowConfirm(false)}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
       {gameWon && (
         <p className="victory">🎉 You matched all pairs! Well done!</p>
       )}

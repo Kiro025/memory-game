@@ -52,4 +52,55 @@
     font-weight: 500;
     color: #2d3436;
   }
-  
+  .confirm-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.25); /* translucent background */
+  z-index: 1000;
+}
+
+.confirm-box {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.confirm-box p {
+  font-size: 1.1rem;
+  color: #2d3436;
+}
+
+.confirm-box button {
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  border: none;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  background: #f1f2f6;
+  color: #444;
+  font-weight: 500;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  gap: 1rem; 
+  width: 100%;
+}
+.confirm-box button:hover {
+  background: #6c5ce7;
+  color: #fff;
+}
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; 
+  width: 100%;
+}

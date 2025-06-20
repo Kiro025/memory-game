@@ -13,7 +13,6 @@ function GameBoard({ level, theme, onReset }) {
   const [timerActive, setTimerActive] = useState(false);
   const [gameWon, setGameWon] = useState(false);
 
-
   // Number of pairs per level
   const getNumPairs = () => {
     if (level === 'easy') return 4;      // 8 cards
@@ -47,6 +46,7 @@ function GameBoard({ level, theme, onReset }) {
     setGameWon(false);
   }, [level, theme]);
 
+  // Timer logic
   useEffect(() => {
     let interval;
     if (timerActive) {
@@ -54,28 +54,18 @@ function GameBoard({ level, theme, onReset }) {
         setTime((prev) => prev + 1);
       }, 1000);
     }
-  
     return () => clearInterval(interval);
   }, [timerActive]);
-
-
-  useEffect(() => { 
-    if (matched.length === getNumPairs()) {
-      setTimerActive(false);
-    }
-  }, [matched]);
 
 
   useEffect(() => {
     if (flipped.length === 2) {
       setDisabled(true);
       setMoves((prev) => prev + 1); //counts the move
-  
       const [i, j] = flipped;
       if (cards[i].img === cards[j].img) {
         setMatched((prev) => [...prev, cards[i].img]);
       }
-  
       setTimeout(() => {
         setFlipped([]);
         setDisabled(false);
@@ -83,18 +73,17 @@ function GameBoard({ level, theme, onReset }) {
     }
   }, [flipped, cards]);
 
+  // Win logic (ONLY ONCE)
   useEffect(() => {
-    if(matched.length == getNumPairs() && flipped.length === 0 && cards.length > 0){
+    if (
+      matched.length === getNumPairs() &&
+      flipped.length === 0 &&
+      cards.length > 0
+    ) {
       setTimerActive(false);
       setGameWon(true);
-      
     }
   }, [matched, flipped, cards]);
-
-  
-  
-  
-  
 
   // Handle flip
   const handleFlip = (index) => {
@@ -103,37 +92,14 @@ function GameBoard({ level, theme, onReset }) {
     setFlipped((prev) => [...prev, index]);
   };
 
-  // Check for match
-  useEffect(() => {
-    if (flipped.length === 2) {
-      setDisabled(true);
-
-      const [i, j] = flipped;
-      if (cards[i].img === cards[j].img) {
-        setMatched((prev) => [...prev, cards[i].img]);
-      }
-
-      setTimeout(() => {
-        setFlipped([]);
-        setDisabled(false);
-      }, 800);
-    }
-  }, [flipped, cards]);
-
-
   return (
     <div className="gameboard">
       <button className="back-button" onClick={onReset}>← Back to Menu</button>
-
       <div className="stats">
         <p><strong>Time:</strong> {time}s</p>
         <p><strong>Moves:</strong> {moves}</p>
       </div>
-
-      <div
-        className="grid"
-        style={{ gridTemplateColumns: getGridTemplateColumns() }}
-      >
+      <div className="grid" style={{ gridTemplateColumns: getGridTemplateColumns() }}>
         {cards.map((card, index) => (
           <Card
             key={card.id}
@@ -143,7 +109,6 @@ function GameBoard({ level, theme, onReset }) {
           />
         ))}
       </div>
-
       {gameWon && (
         <p className="victory">🎉 You matched all pairs! Well done!</p>
       )}

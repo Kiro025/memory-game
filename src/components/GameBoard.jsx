@@ -11,6 +11,7 @@ function GameBoard({ level, theme, onReset }) {
   const [moves, setMoves] = useState(0);
   const [time, setTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
+  const [gameWon, setGameWon] = useState(false);
 
 
   // Number of pairs per level
@@ -42,7 +43,8 @@ function GameBoard({ level, theme, onReset }) {
     setDisabled(false);
     setMoves(0);
     setTime(0);
-    setTimerActive(true);    
+    setTimerActive(true);
+    setGameWon(false);
   }, [level, theme]);
 
   useEffect(() => {
@@ -57,7 +59,7 @@ function GameBoard({ level, theme, onReset }) {
   }, [timerActive]);
 
 
-  useEffect(() => {
+  useEffect(() => { 
     if (matched.length === getNumPairs()) {
       setTimerActive(false);
     }
@@ -80,6 +82,16 @@ function GameBoard({ level, theme, onReset }) {
       }, 800);
     }
   }, [flipped, cards]);
+
+  useEffect(() => {
+    if(matched.length == getNumPairs() && flipped.length === 0 && cards.length > 0){
+      setTimerActive(false);
+      setGameWon(true);
+      
+    }
+  }, [matched, flipped, cards]);
+
+  
   
   
   
@@ -108,8 +120,6 @@ function GameBoard({ level, theme, onReset }) {
     }
   }, [flipped, cards]);
 
-  // Check win
-  const isGameWon = matched.length === getNumPairs();
 
   return (
     <div className="gameboard">
@@ -134,7 +144,7 @@ function GameBoard({ level, theme, onReset }) {
         ))}
       </div>
 
-      {isGameWon && (
+      {gameWon && (
         <p className="victory">🎉 You matched all pairs! Well done!</p>
       )}
     </div>

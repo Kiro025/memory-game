@@ -123,13 +123,20 @@ function GameBoard({ level, theme, onReset }) {
         </div>
       )}
       {gameWon && (
-        <div className="victory-screen">
-          <p className="victory">🎉 You matched all pairs! Well done!</p>
-          <button className="play-again" onClick={handlePlayAgain}>Play Again</button>
+       <div className="confirm-modal">
+          <div className="confirm-box">
+            <p>🎉 You matched all pairs! Well done!</p>
+            <div className='confirm-actions'>
+            
+      <button onClick={() => { handlePlayAgain();setShowConfirm(false);  }}>Play Again</button>
+      <button onClick={() => { setShowConfirm(false); onReset(); }}>Menu</button>
+
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 }
-
+// 
 export default GameBoard;

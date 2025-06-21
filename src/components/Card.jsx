@@ -6,11 +6,9 @@ function Card({ img, flipped, onClick }) {
       <div className={flipped ? 'flipped' : ''}>
         <div className="front">
           {flipped && (
-            img.type === 'emoji' ? (
-              <img src={img.value} alt="emoji" />
-            ) : (
-              <span className="number">{img.value}</span>
-            )
+            <span className={img.type === 'number' ? 'number' : 'emoji'}>
+              {img.value}
+            </span>
           )}
         </div>
         <div className="back">🂠</div>

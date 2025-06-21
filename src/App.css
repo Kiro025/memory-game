@@ -17,8 +17,13 @@ html, body, #root {
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
-  background: #f7f9fc;
   text-align: center;
+  background: #fcfbf7; /*Backup color if we want to remove backround */
+
+  /* backround settings*/
+  background-image: url(https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .container {
